@@ -1,21 +1,23 @@
-const fs = require("fs");
-const path = require("path");
-
+import fs from "fs";
+import path from "path";
 /*
-    Singleton Pattern can become problematic when you introduce it as a direct dependency.
+  Singleton Pattern can become problematic when you introduce it as a direct dependency.
 */
 
 // Singleton database
 // This is a low level module
 
 class MyDatabase {
+  private static instance: MyDatabase;
+  private capitals!: Record<string, number>;
+
   constructor() {
-    const instance = this.constructor.instance;
+    const instance = MyDatabase.instance;
     if (instance) {
       return instance;
     }
 
-    this.constructor.instance = this;
+    MyDatabase.instance = this;
 
     console.log(`Initializing database`);
     this.capitals = {};
@@ -30,7 +32,7 @@ class MyDatabase {
     }
   }
 
-  getPopulation(city) {
+  getPopulation(city: string): number {
     return this.capitals[city];
   }
 }
@@ -44,10 +46,10 @@ class MyDatabase {
     High level modules should not depend on low level modules.
  */
 class SingletonRecordFinder {
-  totalPopulation(cities) {
+  totalPopulation(cities: string[]): number {
     return cities
       .map((city) => new MyDatabase().getPopulation(city))
-      .reduce((x, y) => x + y);
+      .reduce((x, y) => x + y, 0);
   }
 }
 
@@ -56,18 +58,22 @@ class SingletonRecordFinder {
     Constructor lets you specify the database.
 */
 class ConfigurableRecordFinder {
-  constructor(database) {
+  private database: { getPopulation: (city: string) => number };
+
+  constructor(database: { getPopulation: (city: string) => number }) {
     this.database = database;
   }
 
-  totalPopulation(cities) {
+  totalPopulation(cities: string[]): number {
     return cities
       .map((city) => this.database.getPopulation(city))
-      .reduce((x, y) => x + y);
+      .reduce((x, y) => x + y, 0);
   }
 }
 
 class DummyDatabase {
+  private capitals: Record<string, number>;
+
   constructor() {
     this.capitals = {
       alpha: 1,
@@ -76,7 +82,7 @@ class DummyDatabase {
     };
   }
 
-  getPopulation(city) {
+  getPopulation(city: string): number {
     // possible error handling here
     return this.capitals[city];
   }

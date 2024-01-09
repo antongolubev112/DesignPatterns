@@ -4,91 +4,87 @@
   ↳ E.G. An object with 10 constructor arguments
   ↳ Makes the creation process more understandable and easier to use 
 */
-class Tag
-{
-  static get indentSize() { return 2; }
-
-  constructor(name='', text='')
-  {
-    this.name = name;
-    this.text = text;
-    this.children = [];
+class Tag {
+  static get indentSize(): number {
+    return 2;
   }
 
-  toStringImpl(indent)
-  {
-    let html = [];
-    let i = ' '.repeat(indent * Tag.indentSize);
+  name: string;
+  text: string;
+  children: Tag[] = [];
+
+  constructor(name: string = '', text: string = '') {
+    this.name = name;
+    this.text = text;
+  }
+
+  private toStringImpl(indent: number): string {
+    let html: string[] = [];
+    const i = ' '.repeat(indent * Tag.indentSize);
     html.push(`${i}<${this.name}>\n`);
-    if (this.text.length > 0)
-    {
-      html.push(' '.repeat(Tag.indentSize * (indent+1)));
+    if (this.text.length > 0) {
+      html.push(' '.repeat(Tag.indentSize * (indent + 1)));
       html.push(this.text);
       html.push('\n');
     }
 
-    for (let child of this.children)
-      html.push(child.toStringImpl(indent+1));
+    for (const child of this.children) {
+      html.push(child.toStringImpl(indent + 1));
+    }
 
     html.push(`${i}</${this.name}>\n`);
-    return html.join();
+    return html.join('');
   }
 
-  toString()
-  {
+  toString(): string {
     return this.toStringImpl(0);
   }
 
-  static create(name)
-  {
+  static create(name: string): HtmlBuilder {
     return new HtmlBuilder(name);
   }
 }
 
-class HtmlBuilder
-{
-  constructor(rootName)
-  {
+class HtmlBuilder {
+  private root: Tag;
+  private rootName: string;
+
+  constructor(rootName: string) {
     this.root = new Tag(rootName);
     this.rootName = rootName;
   }
 
   // non-fluent - does not return the factory instance
   // cannot chain methods of the builder
-  addChild(childName, childText)
-  {
-    let child = new Tag(childName, childText);
+  addChild(childName: string, childText: string): void {
+    const child = new Tag(childName, childText);
     this.root.children.push(child);
   }
 
   // fluent - returns the factory instance
   // allows you to chain builder methods
-  addChildFluent(childName, childText)
-  {
-    let child = new Tag(childName, childText);
+  addChildFluent(childName: string, childText: string): HtmlBuilder {
+    const child = new Tag(childName, childText);
     this.root.children.push(child);
     return this;
   }
 
-  toString()
-  {
+  toString(): string {
     return this.root.toString();
   }
 
-  clear()
-  {
+  clear(): void {
     this.root = new Tag(this.rootName);
   }
 
-  build()
-  {
+  build(): Tag {
     return this.root;
   }
 }
 
 // HTML paragraph creation without use of a builder.
 const hello = 'hello';
-let html = [];
+let html: string[] = [];
 html.push('<p>');
 html.push(hello);
 html.push('</p>');
@@ -98,15 +94,13 @@ console.log(html.join());
 const words = ['hello', 'world'];
 html = [];
 html.push('<ul>\n');
-for (let word of words)
-  html.push(`  <li>${word}</li>\n`);
+for (const word of words) html.push(`  <li>${word}</li>\n`);
 html.push('</ul>');
 console.log(html.join());
 
 // ordinary non-fluent builder
 let builder = Tag.create('ul');
-for (let word of words)
-  builder.addChild('li', word);
+for (const word of words) builder.addChild('li', word);
 let tag = builder.build();
 console.log(tag.toString());
 
@@ -117,3 +111,4 @@ builder
   .addChildFluent('li', 'bar')
   .addChildFluent('li', 'baz');
 console.log(builder.toString());
+

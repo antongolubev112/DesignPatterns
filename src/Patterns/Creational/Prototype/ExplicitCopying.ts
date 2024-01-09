@@ -3,16 +3,15 @@
  Problem with this approach is that if you have object which use other objects which use other objects
  Then you will need to implement deepCopy for each composite object
 */
-class Address
-{
-  constructor(streetAddress, city, country) {
-    this.streetAddress = streetAddress;
-    this.city = city;
-    this.country = country;
-  }
 
-  deepCopy()
-  {
+class Address {
+  constructor(
+    public streetAddress: string,
+    public city: string,
+    public country: string
+  ) {}
+
+  deepCopy(): Address {
     return new Address(
       this.streetAddress,
       this.city,
@@ -20,37 +19,29 @@ class Address
     );
   }
 
-  toString()
-  {
+  toString(): string {
     return `Address: ${this.streetAddress}, ` +
       `${this.city}, ${this.country}`;
   }
 }
 
-class Person
-{
-  constructor(name, address)
-  {
-    this.name = name;
-    this.address = address; //!
-  }
+class Human {
+  constructor(public name: string, public address: Address) {}
 
-  deepCopy()
-  {
-    return new Person(
+  deepCopy(): Human {
+    return new Human(
       this.name,
       this.address.deepCopy() // needs to be recursive
     );
   }
 
-  toString()
-  {
+  toString(): string {
     return `${this.name} lives at ${this.address}`;
   }
 }
 
 // John can serve as a prototype for people living in the same building
-let john = new Person('John',
+let john = new Human('John',
   new Address('123 London Road', 'London', 'UK'));
 
 let jane = john.deepCopy();

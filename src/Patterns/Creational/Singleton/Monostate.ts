@@ -1,7 +1,9 @@
 /*
     Monostate is similar to a Singleton, except there is no special constructor.
     Monostate instances share all their data.
-    All properties are dstatic
+    All properties are static.
+
+    Use of a singleton is preferred over use of monostate.
 */
 
 class CEO {

@@ -1,87 +1,74 @@
-const readline = require('readline');
-let rl = readline.createInterface({
+import * as readline from 'readline';
+
+const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
-const async = require('async');
 
 // Object Hierarchy is defined below
 
 // Base class
-class HotDrink
-{
+class HotDrink {
   consume() {}
 }
 
 // Derived class
-class Tea extends HotDrink
-{
+class Tea extends HotDrink {
   consume() {
     console.log('This tea is nice with lemon!');
   }
 }
 
 // Derived class
-class Coffee extends HotDrink
-{
-  consume()
-  {
+class Coffee extends HotDrink {
+  consume() {
     console.log(`This coffee is delicious!`);
   }
 }
 
-
 // Base class for Abstract Factory
 // Guide to the inheritors of this class as to what kinds of methods they need to be implementing and providing
-class HotDrinkFactory
-{
-  prepare(amount) { /* abstract */ }
+abstract class HotDrinkFactory {
+  abstract prepare(amount: number): HotDrink;
 }
 
 // Derived Factory
-class CoffeeFactory extends HotDrinkFactory
-{
-  prepare(amount) {
+class CoffeeFactory extends HotDrinkFactory {
+  prepare(amount: number): HotDrink {
     console.log(`Grind some beans, boil water, pour ${amount}ml`);
     return new Tea();
   }
 }
 
 // Derived Factory
-class TeaFactory extends HotDrinkFactory
-{
-  prepare(amount) {
+class TeaFactory extends HotDrinkFactory {
+  prepare(amount: number): HotDrink {
     console.log(`Put in tea bag, boil water, pour ${amount}ml`);
     return new Coffee();
   }
 }
 
 // Use of enum allows the abstract factory class to know what factories exist
-let AvailableDrink = Object.freeze({
+const AvailableDrink = Object.freeze({
   coffee: CoffeeFactory,
   tea: TeaFactory
 });
 
 // Abstract Factory class
-class HotDrinkMachine
-{
+class HotDrinkMachine {
+  private factories: Record<string, HotDrinkFactory> = {};
 
-  constructor()
-  {
-    this.factories = {};
-    for (let drink in AvailableDrink)
-    {
-      //initialise each available factory
-      this.factories[drink] = new AvailableDrink[drink]();
+  constructor() {
+    for (let drink in AvailableDrink) {
+      // initialize each available factory
+      this.factories[drink] = new (AvailableDrink as Record<string, new () => HotDrinkFactory>)[drink]();
     }
   }
 
   // Bad approach
   // If we make a new factory we will need to modify this method
-  makeDrink(type)
-  {
-    switch (type)
-    {
+  makeDrink(type: string): HotDrink {
+    switch (type) {
       case 'tea':
         return new TeaFactory().prepare(200);
       case 'coffee':
@@ -93,21 +80,20 @@ class HotDrinkMachine
 
   // Better approach
   // Allows us to dynamically create each drink type and amounts
-  interact(consumer)
-  {
+  interact(consumer: (drink: HotDrink) => void): void {
     rl.question('Please specify drink and amount ' +
       '(e.g., tea 50): ', answer => {
-      let parts = answer.split(' ');
-      let name = parts[0];
-      let amount = parseInt(parts[1]);
-      let d = this.factories[name].prepare(amount);
+      const parts = answer.split(' ');
+      const name = parts[0];
+      const amount = parseInt(parts[1]);
+      const d = this.factories[name].prepare(amount);
       rl.close();
       consumer(d);
     });
   }
 }
 
-let machine = new HotDrinkMachine();
+const machine = new HotDrinkMachine();
 
 // Bad Approach
 // rl.question('which drink? ', function(answer)

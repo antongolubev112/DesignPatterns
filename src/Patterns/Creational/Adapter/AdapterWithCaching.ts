@@ -1,5 +1,7 @@
 /*
-
+    When we use an adapter pattern, we generate temporary objects.
+    We can end up regenerating the same objects - duplicate work.
+    To avoid this, we can implement caching
 */
 
 

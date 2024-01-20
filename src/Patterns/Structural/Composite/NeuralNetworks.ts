@@ -6,7 +6,7 @@ abstract class Connectable {
   abstract in: Connectable[];
   abstract out: Connectable[];
 
-    /*
+  /*
         This method allows us to connect Neurons to Layers
         It is used to connect the current instance (represented by this) to another instance (represented by other).
     */
@@ -23,7 +23,7 @@ class Neuron extends Connectable {
   in: Neuron[] = [];
   out: Neuron[] = [];
 
-   /* This method does not allow us to connect Neurons to Layers
+  /* This method does not allow us to connect Neurons to Layers
 
     connectTo(other)
     {
@@ -44,7 +44,7 @@ class Neuron extends Connectable {
     it returns one item: itself.
     Essentially it allows the Neuron class to masquerade as an iterable object.
   */
- 
+
   [Symbol.iterator]() {
     let returned = false;
     return {

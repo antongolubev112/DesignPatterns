@@ -15,8 +15,10 @@
     The more classes that derive from shape, the more derived classes you will have. (cartesian product).
     This does not scale.
 */
+
 class Shape {
   // taking a renderer in the constructor allows you to specify what renderer to use.
+  // bridge pattern
   protected renderer: Renderer;
 
   constructor(renderer: Renderer) {

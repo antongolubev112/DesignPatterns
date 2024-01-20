@@ -8,7 +8,8 @@
     A better way to do this, would be to add a decorator class, which takes a shape and adds a color to it.
 */
 
-class Shape {
+
+abstract class Shape {
 /*
   Intrusive way of adding a color property to the Shape class.
   It requires you to modify the entire inheritance tree.
@@ -18,78 +19,75 @@ class Shape {
     this.color = color;
   }
 */
+  abstract toString(): string;
 }
 
+class Circle extends Shape {
+  radius: number;
 
-class Circle extends Shape
-{
-  constructor(radius=0)
-  {
+  constructor(radius = 0) {
     super();
     this.radius = radius;
   }
 
-  resize(factor)
-  {
+  resizeByPercentage(factor: number): void {
     this.radius *= factor;
   }
 
-  toString()
-  {
+  toString(): string {
     return `A circle of radius ${this.radius}`;
   }
 }
 
-class Square extends Shape
-{
-  constructor(side=0)
-  {
+class Square extends Shape {
+  side: number;
+
+  constructor(side = 0) {
     super();
     this.side = side;
   }
 
-  toString()
-  {
+  toString(): string {
     return `A square with side ${this.side}`;
   }
 }
 
 /*
-  Decorator class, which takes a shape and adds a color to it.
+    Decorator class, which takes a shape and adds a color to it.
 */
-class ColoredShape extends Shape
-{
-  constructor(shape, color)
-  {
+class ColoredShape extends Shape {
+  shape: Shape;
+  color: string;
+
+  constructor(shape: Shape, color: string) {
     super();
     this.shape = shape;
     this.color = color;
   }
 
-  toString()
-  {
-    return `${this.shape.toString()} ` +
-      `has the color ${this.color}`;
+  toString(): string {
+    return `${this.shape.toString()} has the color ${this.color}`;
   }
 }
 
-class TransparentShape extends Shape
-{
-  constructor(shape, transparency)
-  {
+class TransparentShape extends Shape {
+  shape: Shape;
+  transparency: number;
+
+  constructor(shape: Shape, transparency: number) {
     super();
     this.shape = shape;
     this.transparency = transparency;
   }
 
-  toString()
-  {
-    return `${this.shape.toString()} has ` +
-      `${this.transparency * 100.0}% transparency`;
+  toString(): string {
+    return `${this.shape.toString()} has ${
+      this.transparency * 100.0
+    }% transparency`;
   }
 }
 
-let circle = new Circle(2);
+const circle = new Circle(2);
 console.log(circle.toString());
 
 let redCircle = new ColoredShape(circle, 'red');
@@ -112,5 +110,3 @@ console.log(redHalfCircle.toString());
 
 // impossible: redHalfCircle is not a Circle
 // redHalfCircle.resize(2);
-redHalfCircle.shape.resize(2);
-

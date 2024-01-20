@@ -87,7 +87,7 @@ class TransparentShape extends Shape {
   }
 }
 
-const circle = new Circle(2);
+const circle= new Circle(2);
 console.log(circle.toString());
 
 let redCircle = new ColoredShape(circle, 'red');

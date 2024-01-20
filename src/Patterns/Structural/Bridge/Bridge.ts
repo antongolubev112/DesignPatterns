@@ -7,7 +7,7 @@
 
     VectorCircle, RasterCircle.
 
-    Image you also had a square class.
+    Imagine you also had a square class.
     Then you would end up with more derived classes:
 
     VectorSquare, RasterSquare

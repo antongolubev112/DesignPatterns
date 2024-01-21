@@ -13,9 +13,9 @@ class Image {
 }
 
 /*
-      We create a proxy class that will be used instead of the real Image class.
-      The proxy class will only load the image when it is needed - when draw() is called.
-  */
+    We create a proxy class that will be used instead of the real Image class.
+    The proxy class will only load the image when it is needed - when draw() is called.
+*/
 class LazyImage {
   url: string;
   image?: Image;

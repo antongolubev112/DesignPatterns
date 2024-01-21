@@ -15,6 +15,11 @@ Below is a summary of what was learned.
 3. **Composite:** used to treat both single (scalar) and composite objects uniformly. i.e. class `Foo` and `Foo[]` will have the same API.
 4. **Decorator:** used to add additional behavior to a class without modifying or inheriting from it. You can compose decorators i.e. wrap a decorator in another decorator.
 5. **Facade:** used to provide a simple and easy to use API for a complex sub system.
+6. **Flyweight:** used to avoid redundancy when storing data. It is a space optimisation technique that externally stores data associated with multiple similar objects.
+7. **Proxy:** Use to contorl access to an object by creating an intermidiary (proxy) for said object. It adds an additional layer of control without changing its functionality.
+
+## Structural Patterns
+1. Chain of Responsibility: Used to create a chain of objects that either handle the request or pass it to the next object in the chain.
 
 
 

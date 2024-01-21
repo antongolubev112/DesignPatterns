@@ -12,6 +12,9 @@ Below is a summary of what was learned.
 ## Structural Patterns
 1. **Adapter:** used to "adapt" / transform a given interface into another interface.
 2. **Bridge:** used to connect different components together through abstractions. It prevents a "cartesian product" complexity explosion (an unscalable number of derived classes).
+3. **Composite:** used to treat both single (scalar) and composite objects uniformly. i.e. class `Foo` and `Foo[]` will have the same API.
+4. **Decorator:** used to add additional behavior to a class without modifying or inheriting from it. You can compose decorators i.e. wrap a decorator in another decorator.
+5. **Facade:** used to provide a simple and easy to use API for a complex sub system.
 
 
 

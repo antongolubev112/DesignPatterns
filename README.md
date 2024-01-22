@@ -19,7 +19,7 @@ Below is a summary of what was learned.
 7. **Proxy:** Use to contorl access to an object by creating an intermidiary (proxy) for said object. It adds an additional layer of control without changing its functionality.
 
 ## Structural Patterns
-1. Chain of Responsibility: Used to create a chain of objects that either handle the request or pass it to the next object in the chain.
+1. **Chain of Responsibility:** Used to create a chain of objects that either handle the request or pass it to the next object in the chain.
 
 
 

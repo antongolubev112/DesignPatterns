@@ -1,42 +1,50 @@
 class Integer {
-  constructor(value) {
+  value: number;
+  constructor(value: number) {
     this.value = value;
   }
 }
 
-let Operation = Object.freeze({
-  addition: 0,
-  subtraction: 1,
-});
+enum Operation {
+  addition = 0,
+  subtraction = 1,
+}
 
 class BinaryOperation {
+  type: Operation | null;
+  left: Integer | BinaryOperation | null;
+  right: Integer | BinaryOperation | null;
+
   constructor() {
     this.type = null;
     this.left = null;
     this.right = null;
   }
 
-  get value() {
+  get value(): number {
     switch (this.type) {
       case Operation.addition:
-        return this.left.value + this.right.value;
+        return (this.left?.value || 0) + (this.right?.value || 0);
       case Operation.subtraction:
-        return this.left.value - this.right.value;
+        return (this.left?.value || 0) - (this.right?.value || 0);
     }
     return 0;
   }
 }
 
-let TokenType = Object.freeze({
-  integer: 0,
-  plus: 1,
-  minus: 2,
-  lparen: 3,
-  rparen: 4,
-});
+enum TokenType {
+  integer = 0,
+  plus = 1,
+  minus = 2,
+  lparen = 3,
+  rparen = 4,
+}
 
 class Token {
-  constructor(type, text) {
+  type: TokenType;
+  text: string;
+
+  constructor(type: TokenType, text: string) {
     this.type = type;
     this.text = text;
   }
@@ -46,13 +54,8 @@ class Token {
   }
 }
 
-/*
-    The lexer is responsible for turning a string into a set of tokens.
-    Go through every char in the input string and create a token for it.
-    The default case is to create a token for an integer. 
-*/
-function lex(input) {
-  let result = [];
+function lex(input: string): Token[] {
+  let result: Token[] = [];
 
   for (let i = 0; i < input.length; ++i) {
     switch (input[i]) {
@@ -86,11 +89,7 @@ function lex(input) {
   return result;
 }
 
-
-/*
-  The parser turns the tokens into an object orientated structure.
-*/
-function parse(tokens) {
+function parse(tokens: Token[]): BinaryOperation {
   let result = new BinaryOperation();
   let haveLHS = false;
 

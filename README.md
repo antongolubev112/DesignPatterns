@@ -2,7 +2,7 @@
 This repository was used to study and learn design patterns, along with principles using TypeScript.  
 Below is a summary of what was learned.
 
-## Patterns
+# Patterns
 ## Creational Patterns
 1. **Builder:** Used for piece wise construction of objects that are complicated to create. For example, an object with 10 constructor arguments. It makes the creation process understandable and easy to use for such objects.
 2. **Factory:** Used for whole object creation (as opposed to piece wise). It is used when object creation logic becomes too complicated. Since constructors cannot be overloaded in JavaScript, complicated constructors can turn into 'optional parameter hell'. This pattern eliminates this.
